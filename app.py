@@ -8,7 +8,7 @@ db = SQLAlchemy(app)
 
 class Game(db.Model):
   id = db.Column(db.Integer, primary_key=True)
-  content = db.Column(db.String(200), nullable=False)
+  content = db.Column(db.String(200), nullable=False, default='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
   date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
 with app.app_context():
