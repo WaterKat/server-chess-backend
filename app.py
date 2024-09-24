@@ -34,6 +34,11 @@ def create_game():
   return redirect(f"/game/{new_game.white_id}")
 
 
+@app.route('/game/<str:player_id>')
+def get_playable_game(player_id):
+  pass
+
+
 @app.route('/', methods=['GET'])
 def index():
   active_games = Game.query.order_by(Game.last_play_date).all()
