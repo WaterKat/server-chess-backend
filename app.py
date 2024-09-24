@@ -21,14 +21,14 @@ with app.app_context():
 @app.route('/game', methods=['POST'])
 def create_game():
   new_game = Game()
-  new_game.black_id = uuid4()
-  new_game.white_id = uuid4()
+  new_game.black_id = str(uuid4())
+  new_game.white_id = str(uuid4())
   
   try:
     db.session.add(new_game)
     db.session.commit()
     
-  except:
+  except Exception as err:
     return 'Something went wrong creating your game.'
   
   return redirect(f"/game/{new_game.white_id}")
