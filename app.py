@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from uuid import uuid4
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///chess.db'
@@ -20,8 +21,8 @@ with app.app_context():
 @app.route('/game', methods=['POST'])
 def create_game():
   new_game = Game()
-  #new_game.black_id = random()
-  #new_game.white_id = random()
+  new_game.black_id = uuid4()
+  new_game.white_id = uuid4()
   
   try:
     db.session.add(new_game)
