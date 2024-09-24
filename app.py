@@ -34,9 +34,20 @@ def create_game():
   return redirect(f"/game/{new_game.white_id}")
 
 
-@app.route('/game/<str:player_id>')
+@app.route('/game/<str:player_id>', methods=['GET', 'POST'])
 def get_playable_game(player_id):
-  pass
+  if request.method=='POST':
+    pass
+  
+  else:
+    game_with_link = Game.query.filter_by(white_id=player_id).first()
+    color="white"
+    if game_with_link is None:
+      game_with_link = Game.query.filter_by(black_id=player_id).first()
+      color="black"
+    if game_with_link is None:
+      return 'Something went wrong getting your game.'
+    return render_template('game.html', game=game_with_link, color=color)
 
 
 @app.route('/spectate/<int:id>')
