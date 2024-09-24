@@ -39,6 +39,11 @@ def get_playable_game(player_id):
   pass
 
 
+@app.route('/spectate/<int:id>')
+def get_spectating_game(id):
+  pass
+
+
 @app.route('/', methods=['GET'])
 def index():
   active_games = Game.query.order_by(Game.last_play_date).all()
