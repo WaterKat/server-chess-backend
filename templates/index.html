@@ -8,14 +8,14 @@
 
 <div class="content">
   <h1 style="text-align: center">Chess!</h1>
-  {% if games | length < 1 %}
+  {% if active_games | length < 1 %}
     <h4 style="text-align: center">There are no current games.</h4>
   {% else %}
     <table>
       {% for game in active_games %}
       <tr>
         <td>ID: {{ game.id }}</td>
-        <td>Last Played: {{ game.last_played.date() }}</td>
+        <td>Last Played: {{ game.last_play_date.date() }}</td>
         <td>Game State: {{ game.content }}</td>
         <td>
           <a href="/game/{{game.id}}">Join</a>
@@ -25,7 +25,7 @@
     </table>
   {% endif %}
   <div class="form">
-    <form action="/" method="POST">
+    <form action="/game" method="POST">
       <input type="text" name="username" id="username">
       <input type="submit" value="Create Game">
     </form>
