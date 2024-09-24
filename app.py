@@ -34,7 +34,7 @@ def create_game():
   return redirect(f"/game/{new_game.white_id}")
 
 
-@app.route('/game/<str:player_id>', methods=['GET', 'POST'])
+@app.route('/game/<player_id>', methods=['GET', 'POST'])
 def get_playable_game(player_id):
   if request.method=='POST':
     pass
