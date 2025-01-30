@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Chess! #{{game.id}}</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="content">
+  <h1 style="text-align: center">Chess! Manage #{{game.id}}</h1>
+  <p>{{game.id}}</p>
+  <p>{{game.content}}</p>
+  <br>
+  <div>
+    {% if urls.white_available %}
+    <a href="{{urls.white_url}}">Join as White: {{urls.white_url}}</a>
+    {% else %}
+    <p>{{urls.white_url}} is playing as White</p>
+    {% endif %}
+  </div>
+  <br>
+  <div>
+    {% if urls.black_available %}
+    <a href="{{urls.black_url}}">Join as Black: {{urls.black_url}}</a>
+    {% else %}
+    <p>{{urls.black_url}} is playing as Black</p>
+    {% endif %}
+  </div>
+  <h4 style="text-align: center">TODO...</h4>
+</div>
+
+{% endblock %}
