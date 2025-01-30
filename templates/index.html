@@ -4,13 +4,12 @@
 <title>Chess!</title>
 {% endblock %}
 
-{% block body %} 
+{% block body %}
 
 <div class="content">
-  <h1 style="text-align: center">Chess!</h1>
-  {% if active_games | length < 1 %}
-    <h4 style="text-align: center">There are no current games.</h4>
-  {% else %}
+  {% if active_games | length < 1 %} <h4 style="text-align: center">There are no
+    current games.</h4>
+    {% else %}
     <table>
       {% for game in active_games %}
       <tr>
@@ -18,18 +17,20 @@
         <td>Last Played: {{ game.last_play_date.date() }}</td>
         <td>Game State: {{ game.content }}</td>
         <td>
-          <a href="/game/{{game.id}}">Join</a>
+          <a href="{{url_for("play_game", game_id=game.id)}}">Join</a>
         </td>
       </tr>
       {% endfor %}
     </table>
-  {% endif %}
-  <div class="form">
-    <form action="/game" method="POST">
-      <input type="text" name="username" id="username">
-      <input type="submit" value="Create Game">
-    </form>
-  </div>
+    {% endif %}
+    <div class="form">
+      <form action="/api/create_game" method="POST">
+        <input type="text" name="username" id="username">
+        <input type="submit" value="Create Game">
+      </form>
+    </div>
+    <br>
+
 </div>
 
 {% endblock %}
