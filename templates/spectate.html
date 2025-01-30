@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Chess! #{{game.id}}</title>
+{% endblock %}
+
+{% block body %} 
+
+<div class="content">
+  <h1 style="text-align: center">Chess! Spectating #{{game.id}}</h1>
+  <p>{{game.content}}</p>
+  <h4 style="text-align: center">TODO...</h4>
+</div>
+
+{% endblock %}
