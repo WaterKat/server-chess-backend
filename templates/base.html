@@ -1,13 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    {% block head %}{% endblock %}
-  </head>
-  <body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/main.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <h1><a href="/">Chess!</a></h1>
+
+      <div class="form">
+        <form action="/api/change_username" method="POST">
+          <input type="text" name="new_username" id="new_username">
+          <input type="submit" value="Change Username">
+        </form>
+      </div>
+      <p class="username margin-0 padding-6">{{g.user.username}}</p>
+
+    </div>
+  </header>
+  <div class="content">
     {% block body %}{% endblock %}
-  </body>
+  </div>
+  <footer>
+    <p>Created by WaterKat</p>
+    </div>
+</body>
 </html>
