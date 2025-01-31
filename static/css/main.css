@@ -106,10 +106,56 @@ footer {
   justify-content: space-between;
 }
 
+.chat-window {
+  width: 200px;
+  height: 300px;
+
+  display: flex;
+  flex-direction: column;
+
+  background-color: burlywood;
+}
+
+.chat-window .chat-header {
+  height: 30px;
+  background-color: #333;
+  color: white;
+  text-align: center;
+}
+
+.chat-window .chat-body {
+  flex: 1;
+  overflow-y: auto;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.chat-window .chat-footer {
+  height: 30px;
+
+  background-color: #333;
+  color: white;
+
+  text-align: center;
+}
+
+.chat-window .chat-footer textarea {
+  height: 28px;
+}
+
+.chat-window .chat-footer button {
+  height: 28px;
+  vertical-align: middle;
+}
+
 .padding-6 {
   padding: 6px;
 }
 
 .margin-0 {
   margin: 0;
+}
+
+.text-area-no-resize {
+  resize: none;
 }

@@ -10,6 +10,22 @@
   <h1 style="text-align: center">Chess! Playing #{{game.id}}</h1>
   <p>{{game.id}}</p>
   <p>{{game.content}}</p>
+  <div id="chatbox" class="chat-window">
+    <div class="chat-header">
+      <span>Chat</span>
+    </div>
+    <div class="chat-body">
+      <div class="chat-message">
+        <span class="chat-message-username"></span>
+        <span class="chat-message-content">Welcome to Chess!</span>
+      </div>
+    </div>
+    <div class="chat-footer">
+      <textarea class="chat-input text-area-no-resize"
+        placeholder="Type your message..."></textarea>
+      <button class="send-button">Send</button>
+    </div>
+  </div>
   <h4 style="text-align: center">TODO...</h4>
 </div>
 
