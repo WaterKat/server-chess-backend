@@ -55,6 +55,14 @@ class User(db.Model):
     last_login = db.Column(db.DateTime, default=datetime.now(timezone.utc))
 
 
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    game_id = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.String(200), nullable=False)
+    content = db.Column(db.String(200), nullable=False)
+    date_created = db.Column(db.DateTime, default=datetime.now(timezone.utc))
+
+
 class UserJWTData:
     user_id: str = "0"
 
