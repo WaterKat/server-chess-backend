@@ -22,7 +22,7 @@ echo Unpacking...
 ssh %SSH_USER%@%SSH_HOST% "cd %SSH_DIR%; tar -xzf %ARCHIVE_PATH% -C .; rm %ARCHIVE_PATH%"
 
 echo Updating and starting service...
-ssh %SSH_USER%@%SSH_HOST% "cp %SSH_DIR%/scripts/ServerChess.service /etc/systemd/system/ServerChess.service; sed -i 's/$PROJECT_DIR/%SSH_DIR%/g' /etc/systemd/system/ServerChess.service; "
+ssh %SSH_USER%@%SSH_HOST% "cp %SSH_DIR%/scripts/ServerChess.service /etc/systemd/system/ServerChess.service; sed -i 's/\$PROJECT_DIR/%SSH_DIR%/g' /etc/systemd/system/ServerChess.service; "
 ssh %SSH_USER%@%SSH_HOST% "systemctl enable ServerChess.service || echo 'Enabling service failed...'"
 ssh %SSH_USER%@%SSH_HOST% "systemctl start ServerChess.service || echo 'Starting service failed...'"
 
