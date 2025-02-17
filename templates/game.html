@@ -5,11 +5,23 @@
 {% endblock %}
 
 {% block body %}
-
-<div class="content">
+<div>
   <h1 style="text-align: center">Chess! Playing #{{game.id}}</h1>
-  <p>{{game.id}}</p>
-  <p>{{game.content}}</p>
+  <div class="game-board">
+    {% for row in board_content %}
+    {% for cell in row %}
+    <form action="{{cell.action_link}}" method="POST" class="game-board piece"
+      style="left: {{50 * cell.column / 16}}vw; top: {{50 * cell.row / 16}}vw;">
+      <input type="hidden" name="row" value="{{cell.row}}"></input>
+      <input type="hidden" name="column" value="{{cell.column}}"></input>
+      <input type="submit" value="{{cell.piece}}" class="game-board piece {{"
+        white" if cell.is_white else "black" }} {{"white-space" if
+        cell.board_is_white else "black-space" }} {{"selected" if
+        cell.is_selected else "" }}"></input>
+    </form>
+    {% endfor %}
+    {% endfor %}
+  </div>
   <div id="chatbox" class="chat-window">
     <div class="chat-header">
       <span>Chat</span>
@@ -29,4 +41,4 @@
   <h4 style="text-align: center">TODO...</h4>
 </div>
 
-{% endblock %}
+{% endblock %} 

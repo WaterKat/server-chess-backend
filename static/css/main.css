@@ -148,6 +148,67 @@ footer {
   vertical-align: middle;
 }
 
+.game-board {
+  position: relative;
+
+  width: 50vw;
+  height: 50vw;
+}
+
+.game-board form {
+  padding: 0;
+  margin: 0;
+}
+
+.game-board .piece {
+  position: absolute;
+
+  width: 3.125vw;
+  height: 3.125vw;
+
+  padding: 0;
+  margin: 0;
+
+  font-size: 2vw;
+
+  justify-content: center;
+  vertical-align: middle;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+}
+
+.game-board .black {
+  color: black;
+}
+
+.game-board .white {
+  color: white;
+}
+
+.game-board .white-space {
+  background-color: lightgreen;
+}
+
+.game-board .black-space {
+  background-color: darkseagreen;
+} 
+
+.game-board .white-space.valid-space {
+  border-color: lightsalmon !important;
+}
+
+.game-board .black-space.valid-space {
+  border-color: lightcoral !important;
+}
+
+.game-board .white-space.selected {
+  background-color: salmon !important;
+}
+
+.game-board .black-space.selected {
+  background-color: coral !important;
+}
+
 .padding-6 {
   padding: 6px;
 }

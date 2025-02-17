@@ -18,6 +18,10 @@ load_dotenv()
 import jwt
 
 
+# chess
+import chess
+
+
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///chess.db"
 db = SQLAlchemy(app)
@@ -41,7 +45,7 @@ class Game(db.Model):
     content = db.Column(
         db.String(200),
         nullable=False,
-        default="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR",
+        default=chess.Board().fen(),
     )
     last_play_date = db.Column(db.DateTime, default=datetime.now(timezone.utc))
     date_created = db.Column(db.DateTime, default=datetime.now(timezone.utc))
@@ -254,7 +258,7 @@ def join_game(private_game_id, entry_key):
 
 
 # MARK: play game
-@app.route("/play_game/<game_id>", methods=["GET"])
+@app.route("/play_game/<game_id>", methods=["GET", "POST"])
 def play_game(game_id):
     if g.user is None:
         return "User not found."
@@ -265,7 +269,46 @@ def play_game(game_id):
         return "Game not found."
     if (game.white_id != g.user.user_id) and (game.black_id != g.user.user_id):
         return render_template("spectate.html", game=game)
-    return render_template("game.html", game=game)
+
+    selected_row = request.form.get("row")
+    selected_column = request.form.get("column")
+    selected = None
+    try:
+        selected = (chr(ord('a') + int(selected_row)), 
+                    chr(ord('8') - int(selected_column)))
+        pass
+    except Exception as err:
+
+    if not selected_row is None and not selected_column is None:
+      row_num = int(selected_row) if 
+      row = int(selected_row) 
+      selected = (selected_row, selected_column)
+
+    print("play requested", (selected_row, selected_column))
+
+    raw_board_content = str(chess.Board(game.content))
+    raw_board_content_rows = raw_board_content.split("\n")
+    board_content_items = []
+    for row_index, row in enumerate(raw_board_content_rows):
+        raw_board_content_column = row.split(" ")
+        board_row = []
+        for column_index, piece in enumerate(raw_board_content_column):
+            piece_data = {
+                "piece": piece if piece != "." else "",
+                "row": row_index,
+                "column": column_index,
+                "board_is_white": ((row_index + column_index) % 2 == 0),
+                "is_white": piece.isupper(),
+                "is_selected": (str(selected_row) == str(row_index))
+                and (str(selected_column) == str(column_index)),
+                "is_valid_location": 
+                "action_link": url_for("play_game", game_id=game_id),
+            }
+            if (piece_data.get("is_selected")):
+                print("selected: ", piece_data)
+            board_row.append(piece_data)
+        board_content_items.append(board_row)
+    return render_template("game.html", game=game, board_content=board_content_items)
 
 
 @app.route("/game/<user_id>", methods=["GET", "POST"])
