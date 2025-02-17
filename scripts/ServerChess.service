@@ -1,0 +1,15 @@
+[Unit]
+Description=Server Chess Backend
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+WorkingDirectory=$PROJECT_DIR
+ExecStart=./scripts/start.sh
+
+[Install]
+WantedBy=multi-user.target
