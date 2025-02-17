@@ -1,4 +1,4 @@
-@echo on
+@echo off
 set ARCHIVE_PATH=project.tar.gz
 set ENV_PATH=.env.development
 
