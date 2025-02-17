@@ -10,6 +10,8 @@ RestartSec=1
 User=root
 WorkingDirectory=$PROJECT_DIR
 ExecStart=$PROJECT_DIR/scripts/start.sh
+StandardOutput=append:/var/log/ServerChess.log
+StandardError=append:/var/log/ServerChess.log
 
 [Install]
 WantedBy=multi-user.target
