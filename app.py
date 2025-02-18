@@ -206,7 +206,7 @@ def manage_game(game_id):
         "white_available": game.white_id.startswith("_"),
         "white_url": (
             url_for(
-                "join_game", private_game_id=game.private_id, entry_key=game.white_id
+                "chess.join_game", private_game_id=game.private_id, entry_key=game.white_id
             )
             if game.white_id.startswith("_")
             else User.query.filter_by(user_id=game.white_id).first().username
@@ -215,7 +215,7 @@ def manage_game(game_id):
         "black_available": game.black_id.startswith("_"),
         "black_url": (
             url_for(
-                "join_game", private_game_id=game.private_id, entry_key=game.black_id
+                "chess.join_game", private_game_id=game.private_id, entry_key=game.black_id
             )
             if game.black_id.startswith("_")
             else User.query.filter_by(user_id=game.black_id).first().username
