@@ -25,7 +25,7 @@ import chess
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///chess.db"
 db = SQLAlchemy(app)
-chess_bp = Blueprint('chess', __name__, url_prefix='/chess')
+chess_bp = Blueprint('chess', __name__, url_prefix='/chess', static_folder='static', static_url_path='static')
 
 
 class COOKIE_KEYS(Enum):
