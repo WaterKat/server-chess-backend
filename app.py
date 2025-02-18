@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, make_response, url_for, g
+from flask import Flask, Blueprint, request, render_template, redirect, make_response, url_for, g
 from flask_sqlalchemy import SQLAlchemy
 
 from urllib.parse import urlparse, urlencode
@@ -25,6 +25,7 @@ import chess
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///chess.db"
 db = SQLAlchemy(app)
+chess_bp = Blueprint('chess', __name__, url_prefix='/chess')
 
 
 class COOKIE_KEYS(Enum):
@@ -92,17 +93,17 @@ def create_default_jwt_token_object():
 
 
 # MARK: before request
-@app.before_request
+@chess_bp.before_request
 def load_user():
     # ? init player data
     g.user = None
 
     # ? don't update jwt if not needed
-    if request.path == url_for("create_user"):
+    if request.path == url_for("chess.create_user"):
         return  # not redirect
 
     # ? create redirect response
-    redirect_response = redirect(url_for("create_user", next=request.url))
+    redirect_response = redirect(url_for("chess.create_user", next=request.url))
 
     # ? check jwt
     try:
@@ -120,16 +121,16 @@ def load_user():
 
 
 # MARK: create user
-@app.route("/create_user", methods=["GET"])
+@chess_bp.route("/create_user", methods=["GET"])
 def create_user():
     # ? get next url, check if same url to prevent redirect loop
-    query_next_url = request.args.get("next") or url_for("index")
+    query_next_url = request.args.get("next") or url_for("chess.index")
     parsed_query_url = urlparse(query_next_url)
     if (
-        parsed_query_url.path == url_for("create_user")
+        parsed_query_url.path == url_for("chess.create_user")
         and parsed_query_url.netloc == request.host
     ):
-        query_next_url = url_for("index")
+        query_next_url = url_for("chess.index")
     redirect_response = make_response(redirect(query_next_url))
 
     # ? get jwt cookie
@@ -163,7 +164,7 @@ def create_user():
 
 
 # MARK: change username
-@app.route("/api/change_username", methods=["POST"])
+@chess_bp.route("/api/change_username", methods=["POST"])
 def change_username():
     try:
         g.user.username = request.form.get("new_username") or "Player"
@@ -175,7 +176,7 @@ def change_username():
 
 
 # MARK: create game
-@app.route("/api/create_game", methods=["POST"])
+@chess_bp.route("/api/create_game", methods=["POST"])
 def create_game():
     try:
         if g.user is None:
@@ -184,14 +185,14 @@ def create_game():
         new_game.owner_id = g.user.user_id
         db.session.add(new_game)
         db.session.commit()
-        return redirect(url_for("manage_game", game_id=new_game.id))
+        return redirect(url_for("chess.manage_game", game_id=new_game.id))
     except Exception as err:
         print("Error creating game", err)
         return "Something went wrong creating your game."
 
 
 # MARK: manage game
-@app.route("/api/manage_game/<game_id>", methods=["GET"])
+@chess_bp.route("/api/manage_game/<game_id>", methods=["GET"])
 def manage_game(game_id):
     if g.user is None:
         return "User not found."
@@ -226,7 +227,7 @@ def manage_game(game_id):
 
 
 # MARK: join game
-@app.route("/api/join_game/<private_game_id>/<entry_key>", methods=["GET"])
+@chess_bp.route("/api/join_game/<private_game_id>/<entry_key>", methods=["GET"])
 def join_game(private_game_id, entry_key):
     if g.user is None:
         return "User not found."
@@ -254,11 +255,11 @@ def join_game(private_game_id, entry_key):
         return "Invalid entry key."
 
     db.session.commit()
-    return redirect(url_for("play_game", game_id=game.id))
+    return redirect(url_for("chess.play_game", game_id=game.id))
 
 
 # MARK: play game
-@app.route("/play_game/<game_id>", methods=["GET", "POST"])
+@chess_bp.route("/play_game/<game_id>", methods=["GET", "POST"])
 def play_game(game_id):
     if g.user is None:
         return "User not found."
@@ -278,10 +279,10 @@ def play_game(game_id):
                     chr(ord('8') - int(selected_column)))
         pass
     except Exception as err:
+      pass
 
     if not selected_row is None and not selected_column is None:
-      row_num = int(selected_row) if 
-      row = int(selected_row) 
+      row_num = int(selected_row)
       selected = (selected_row, selected_column)
 
     print("play requested", (selected_row, selected_column))
@@ -301,8 +302,8 @@ def play_game(game_id):
                 "is_white": piece.isupper(),
                 "is_selected": (str(selected_row) == str(row_index))
                 and (str(selected_column) == str(column_index)),
-                "is_valid_location": 
-                "action_link": url_for("play_game", game_id=game_id),
+                "is_valid_location": False,
+                "action_link": url_for("chess.play_game", game_id=game_id),
             }
             if (piece_data.get("is_selected")):
                 print("selected: ", piece_data)
@@ -311,7 +312,7 @@ def play_game(game_id):
     return render_template("game.html", game=game, board_content=board_content_items)
 
 
-@app.route("/game/<user_id>", methods=["GET", "POST"])
+@chess_bp.route("/game/<user_id>", methods=["GET", "POST"])
 def get_playable_game(user_id):
     if request.method == "POST":
         pass
@@ -327,17 +328,20 @@ def get_playable_game(user_id):
         return render_template("game.html", game=game_with_link, color=color)
 
 
-@app.route("/spectate/<int:id>")
+@chess_bp.route("/spectate/<int:id>")
 def get_spectating_game(id):
     pass
 
 
-@app.route("/", methods=["GET"])
+@chess_bp.route("/", methods=["GET"])
 def index():
     active_games = Game.query.order_by(Game.last_play_date).all()
     return render_template("index.html", active_games=active_games)
 
 
+app.register_blueprint(chess_bp)
+
+
 if __name__ == "__main__":
     is_debug = False
-    app.run(host="0.0.0.0" if not is_debug else "127.0.0.1", debug=is_debug)
+    app.run(host="0.0.0.0" if not is_debug else "127.0.0.1", debug=is_debug, port=3000)

@@ -17,7 +17,7 @@
         <td>Last Played: {{ game.last_play_date.date() }}</td>
         <td>Game State: {{ game.content }}</td>
         <td>
-          <a href="{{url_for("play_game", game_id=game.id)}}">Join</a>
+          <a href="{{url_for("chess.play_game", game_id=game.id)}}">Join</a>
         </td>
       </tr>
       {% endfor %}
