@@ -2,7 +2,7 @@
 set ARCHIVE_PATH=project.tar.gz
 set ENV_PATH=.env.development
 
-echo Deploying using %ENV_PATH% to debian based machine.
+echo Deploying using %ENV_PATH% to debian based machine. Please ensure python3, python3-venv are installed
 
 echo Loading %ENV_PATH% file...
 setlocal
