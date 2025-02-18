@@ -20,6 +20,7 @@ ssh %SSH_USER%@%SSH_HOST% "systemctl stop ServerChess.service || echo 'Stopping 
 
 echo Unpacking...
 ssh %SSH_USER%@%SSH_HOST% "cd %SSH_DIR%; tar -xzf %ARCHIVE_PATH% -C .; rm %ARCHIVE_PATH%; chmod +x ./scripts/start.sh"
+ssh %SSH_USER%@%SSH_HOST% "cd %SSH_DIR%; dos2unix ./**/*.* || echo 'dos2unix may not be installed or not working properly'"
 
 echo Updating and starting service...
 ssh %SSH_USER%@%SSH_HOST% "cp %SSH_DIR%/scripts/ServerChess.service /etc/systemd/system/ServerChess.service; sed -i 's|\$PROJECT_DIR|%SSH_DIR%|g' /etc/systemd/system/ServerChess.service; "
